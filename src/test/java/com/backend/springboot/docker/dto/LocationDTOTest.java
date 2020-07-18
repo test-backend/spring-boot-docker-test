@@ -38,5 +38,35 @@ public class LocationDTOTest {
 		assertEquals(locationDto.getLongitude(), location.getLongitude());
 		assertEquals(locationDto.getRegion(), location.getRegion());
 	}
+	
+	@Test
+	public void testMapFromEntityReturnsLocationDto() {
+		// Arrange
+		final Location location = new Location();
+		location.setCity("city");
+		location.setCountry("country");
+		location.setId(1);
+		location.setLatitude("latitude");
+		location.setLongitude("longitude");
+		location.setRegion("region");
+		
+		// Act
+		final LocationDTO locationDto = LocationDTO.mapFromEntity(location);
+		
+		// Assert
+		assertNotNull(locationDto);
+		assertEquals(location.getCity(), locationDto.getCity());
+		assertEquals(location.getCountry(), locationDto.getCountry());
+		assertEquals(location.getId(), locationDto.getId());
+		assertEquals(location.getLatitude(), locationDto.getLatitude());
+		assertEquals(location.getLongitude(), locationDto.getLongitude());
+		assertEquals(location.getRegion(), locationDto.getRegion());
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testMapFromEntityThrowsNullPointerExceptionIfNullEntity() {
+		// Act & assert
+		LocationDTO.mapFromEntity(null);
+	}
 
 }

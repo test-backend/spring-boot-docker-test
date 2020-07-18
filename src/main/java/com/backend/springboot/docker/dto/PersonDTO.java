@@ -61,4 +61,13 @@ public class PersonDTO {
 		
 		return person;
 	}
+	
+	public static PersonDTO mapFromEntity(final Person person) {
+		final PersonDTO personDto = new PersonDTO();
+		personDto.setBirthday(person.getBirthday().toString());
+		personDto.setId(person.getId());
+		personDto.setLocation(LocationDTO.mapFromEntity(person.getLocation()));
+		personDto.setName(person.getName());
+		return personDto;
+	}
 }

@@ -75,4 +75,14 @@ public class LocationDTO {
 		return location;
 	}
 	
+	public static LocationDTO mapFromEntity(final Location location) {
+		final LocationDTO locationDTO = new LocationDTO();
+		locationDTO.setCity(location.getCity());
+		locationDTO.setCountry(location.getCountry());
+		locationDTO.setId(location.getId());
+		locationDTO.setLatitude(location.getLatitude());
+		locationDTO.setLongitude(location.getLongitude());
+		locationDTO.setRegion(location.getRegion());
+		return locationDTO;
+	}
 }

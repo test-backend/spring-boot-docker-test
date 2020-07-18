@@ -3,10 +3,12 @@ package com.backend.springboot.docker.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.sql.Date;
 import java.text.ParseException;
 
 import org.junit.Test;
 
+import com.backend.springboot.docker.model.Location;
 import com.backend.springboot.docker.model.Person;
 
 public class PersonDTOTest {
@@ -61,6 +63,32 @@ public class PersonDTOTest {
 		
 		// Act & assert
 		personDto.mapToEntity();
+	}
+	
+	@Test
+	public void testMapFromEntityReturnsPersonDto() {
+		// Arrange
+		final Person person = new Person();
+		person.setBirthday(new Date(1L));
+		person.setId(1);
+		person.setLocation(new Location());
+		person.setName("name");
+		
+		// Act
+		final PersonDTO personDto = PersonDTO.mapFromEntity(person);
+		
+		// Assert
+		assertNotNull(personDto);
+		assertEquals(person.getBirthday().toString(), personDto.getBirthday());
+		assertEquals(person.getId(), personDto.getId());
+		assertNotNull(person.getLocation());
+		assertEquals(person.getName(), personDto.getName());
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testMapFromEntityThrowsNullPointerExceptionIfNullEntity() {
+		// Act & assert
+		PersonDTO.mapFromEntity(null);
 	}
 	
 }
