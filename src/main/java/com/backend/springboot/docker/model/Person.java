@@ -7,10 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "PERSON")
 public class Person {
 	
 	@Id
@@ -22,7 +23,6 @@ public class Person {
 	private Date birthday;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="LOCATION_ID")
 	private Location location;
 
 	public Integer getId() {

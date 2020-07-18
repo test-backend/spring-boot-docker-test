@@ -1,5 +1,5 @@
 INSERT INTO PERSON (NAME, BIRTHDAY, LOCATION_ID) VALUES
-    ('Name_1', '1980-03-14', floor(random() * 4 + 1)::int),
+    ('Name_1', '1980-03-14', 1),
     ('Name_2', '1981-03-14', floor(random() * 4 + 1)::int),
     ('Name_3', '1982-03-14', floor(random() * 4 + 1)::int),
     ('Name_4', '1983-03-14', floor(random() * 4 + 1)::int),

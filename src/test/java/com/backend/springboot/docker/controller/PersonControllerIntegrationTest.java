@@ -1,8 +1,10 @@
 package com.backend.springboot.docker.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,5 +78,34 @@ public class PersonControllerIntegrationTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.location.id").isNotEmpty())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.location.city").isNotEmpty());
 	}
+	
+	@Test
+	public void getPersonsByLocationWorksThroughAllLayers() throws Exception {
+		// Arrange
+		final LocationDTO locationDto = new LocationDTO();
+		locationDto.setCity("Madrid");
+		locationDto.setCountry("Spain");
+
+		// Act & assert
+		mockMvc.perform(post("/person/findByLocation")
+				.content(new Gson().toJson(locationDto))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0]").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].name").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].birthday").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.city").value("Madrid"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.region").value("Madrid"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.country").value("Spain"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.latitude").value("40°23′N"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].location.longitude").value("3°43′W"));
+
+	}
+
 
 }

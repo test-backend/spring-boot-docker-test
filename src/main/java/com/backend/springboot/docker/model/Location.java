@@ -1,11 +1,16 @@
 package com.backend.springboot.docker.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -34,6 +39,9 @@ public class Location {
 
 	@Column(name = "LONGITUDE", nullable = false)
 	private String longitude;
+	
+	@OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Person> person;
 
 	public Integer getId() {
 		return id;
@@ -83,4 +91,11 @@ public class Location {
 		this.longitude = longitude;
 	}
 
+	public List<Person> getPerson() {
+		return person;
+	}
+
+	public void setPerson(List<Person> person) {
+		this.person = person;
+	}
 }
