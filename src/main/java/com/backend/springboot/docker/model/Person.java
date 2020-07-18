@@ -22,7 +22,7 @@ public class Person {
 	private Date birthday;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="location_id")
+    @JoinColumn(name="LOCATION_ID")
 	private Location location;
 
 	public Integer getId() {
