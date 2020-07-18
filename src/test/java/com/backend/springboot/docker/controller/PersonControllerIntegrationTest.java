@@ -2,6 +2,7 @@ package com.backend.springboot.docker.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,21 @@ public class PersonControllerIntegrationTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.location.id").isNotEmpty())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.location.city").value("city"));
 
+	}
+	
+	@Test
+	public void getPersonAndLocationByIdWorksThroughAllLayers() throws Exception {
+		// Act & assert
+		mockMvc.perform(get("/person/{id}", 3)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("3"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Name_3"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.location").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.location.id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.location.city").isNotEmpty());
 	}
 
 }

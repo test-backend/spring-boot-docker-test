@@ -58,4 +58,35 @@ public class PersonControllerTest {
 		personController.addPerson(null);
 	}
 	
+	@Test
+	public void testGetPersonAndLocationReturnsPersonAndLocation() throws Exception {
+		// Arrange
+		final PersonDTO personDto = new PersonDTO();
+		personDto.setBirthday("1990-10-10");
+		personDto.setId(null);
+		personDto.setLocation(new LocationDTO());
+		personDto.setName("name");
+		
+		Mockito.when(personService.findById(Mockito.anyInt())).thenReturn(personDto);
+		
+		// Act
+		final PersonDTO result = personController.getPersonAndLocationById(3);
+		
+		// Assert
+		assertNotNull(result);
+		assertEquals(personDto.getBirthday(), result.getBirthday());
+		assertEquals(personDto.getId(), result.getId());
+		assertEquals(personDto.getLocation(), result.getLocation());
+		assertEquals(personDto.getName(), result.getName());
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testGetPersonAndLocationThrowsExceptionWhenServiceException() throws Exception {
+		// Arrange
+		Mockito.when(personService.findById(Mockito.anyInt())).thenThrow(RuntimeException.class);
+		
+		// Act & assert
+		personController.getPersonAndLocationById(3);
+	}
+	
 }

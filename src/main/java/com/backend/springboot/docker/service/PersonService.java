@@ -6,5 +6,7 @@ import com.backend.springboot.docker.model.Person;
 public interface PersonService {
 
 	public PersonDTO save(final Person person);
+	
+	public PersonDTO findById(final Integer id);
 
 }

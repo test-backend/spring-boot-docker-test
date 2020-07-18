@@ -2,6 +2,7 @@ package com.backend.springboot.docker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,16 @@ public class PersonController {
 	public PersonDTO addPerson(@RequestBody PersonDTO person) throws Exception{
         try {
 			return personService.save(person.mapToEntity());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw e;
+		}
+	}
+	
+	@GetMapping(value = "/{id}")
+	public PersonDTO getPersonAndLocationById(@PathVariable("id") Integer id) {
+		try {
+			return personService.findById(id);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw e;
