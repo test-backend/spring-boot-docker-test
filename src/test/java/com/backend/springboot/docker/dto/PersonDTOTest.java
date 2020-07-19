@@ -2,6 +2,7 @@ package com.backend.springboot.docker.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -52,8 +53,8 @@ public class PersonDTOTest {
 		personDto.mapToEntity();
 	}
 	
-	@Test(expected = NullPointerException.class)
-	public void testMapToEntityThrowsNullPointerExceptionWhenNullLocation() throws Exception {
+	@Test
+	public void testMapToEntityWithNullLocationReturnsEntityWithNullLocation() throws Exception {
 		// Arrange
 		final PersonDTO personDto = new PersonDTO();
 		personDto.setBirthday("1990-10-10");
@@ -61,8 +62,12 @@ public class PersonDTOTest {
 		personDto.setLocation(null);
 		personDto.setName("name");
 		
-		// Act & assert
-		personDto.mapToEntity();
+		// Act
+		final Person person = personDto.mapToEntity();
+		
+		// Assert
+		assertNotNull(person);
+		assertNull(person.getLocation());
 	}
 	
 	@Test
@@ -83,6 +88,23 @@ public class PersonDTOTest {
 		assertEquals(person.getId(), personDto.getId());
 		assertNotNull(person.getLocation());
 		assertEquals(person.getName(), personDto.getName());
+	}
+	
+	@Test
+	public void testMapFromEntityWithNullLocationReturnsPersonDtoWithNullLocation() {
+		// Arrange
+		final Person person = new Person();
+		person.setBirthday(new Date(1L));
+		person.setId(1);
+		person.setLocation(null);
+		person.setName("name");
+		
+		// Act
+		final PersonDTO personDto = PersonDTO.mapFromEntity(person);
+		
+		// Assert
+		assertNotNull(personDto);
+		assertNull(person.getLocation());
 	}
 	
 	@Test(expected = NullPointerException.class)

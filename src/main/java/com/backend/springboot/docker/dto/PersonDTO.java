@@ -56,7 +56,7 @@ public class PersonDTO {
 		
 		person.setBirthday(sqlBirthday);
 		person.setId(this.id);
-		person.setLocation(this.location.mapToEntity());
+		person.setLocation(this.location != null ? this.location.mapToEntity() : null);
 		person.setName(this.name);
 		
 		return person;
@@ -66,7 +66,7 @@ public class PersonDTO {
 		final PersonDTO personDto = new PersonDTO();
 		personDto.setBirthday(person.getBirthday().toString());
 		personDto.setId(person.getId());
-		personDto.setLocation(LocationDTO.mapFromEntity(person.getLocation()));
+		personDto.setLocation(person.getLocation() != null ? LocationDTO.mapFromEntity(person.getLocation()) : null);
 		personDto.setName(person.getName());
 		return personDto;
 	}
